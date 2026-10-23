@@ -30,13 +30,13 @@ export function UploadScreen({ loading, progress, onFile }: UploadScreenProps) {
   if (dragging) borderClass = "border-primary bg-primary/10";
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
-      <h1 className="font-display text-4xl md:text-5xl font-extrabold tracking-[-1px] text-center mb-3">
+    <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 sm:py-12">
+      <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-[-1px] text-center mb-3">
         <span className="bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] bg-clip-text text-transparent">
           Instalyze
         </span>
       </h1>
-      <p className="text-muted-foreground text-center max-w-xl mb-8">
+      <p className="text-sm sm:text-base text-muted-foreground text-center max-w-xl mb-6 sm:mb-8">
         Drop your Instagram data export, pick a conversation and see its analytics and full message history.
       </p>
 
@@ -54,9 +54,9 @@ export function UploadScreen({ loading, progress, onFile }: UploadScreenProps) {
           setDragging(false);
           pick(e.dataTransfer.files[0]);
         }}
-        className={`w-full max-w-xl rounded-2xl border-2 border-dashed p-10 flex flex-col items-center gap-3 transition-colors ${borderClass} ${loading ? "cursor-progress" : "cursor-pointer"}`}
+        className={`w-full max-w-xl rounded-2xl border-2 border-dashed p-6 sm:p-10 flex flex-col items-center gap-3 transition-colors ${borderClass} ${loading ? "cursor-progress" : "cursor-pointer"}`}
       >
-        <FileArchive className="w-10 h-10 text-primary" />
+        <FileArchive className="w-9 h-9 sm:w-10 sm:h-10 text-primary" />
         {loading ? (
           <div className="w-full flex flex-col items-center gap-3">
             <span className="text-sm font-medium">
@@ -71,8 +71,8 @@ export function UploadScreen({ loading, progress, onFile }: UploadScreenProps) {
           </div>
         ) : (
           <>
-            <span className="font-semibold">Drop your Instagram zip here</span>
-            <span className="text-sm text-muted-foreground">or click to choose the file</span>
+            <span className="font-semibold text-center">Drop your Instagram zip here</span>
+            <span className="text-sm text-muted-foreground text-center">or click to choose the file</span>
           </>
         )}
       </button>
@@ -87,12 +87,12 @@ export function UploadScreen({ loading, progress, onFile }: UploadScreenProps) {
         }}
       />
 
-      <p className="flex items-center gap-1.5 text-xs text-muted-foreground mt-4">
-        <Lock className="w-3.5 h-3.5" />
+      <p className="flex items-center gap-1.5 text-xs text-muted-foreground mt-4 text-center px-2">
+        <Lock className="w-3.5 h-3.5 shrink-0" />
         Everything is read inside your browser. Nothing is uploaded anywhere.
       </p>
 
-      <div className="w-full max-w-xl mt-10 bg-card border border-border rounded-xl p-5">
+      <div className="w-full max-w-xl mt-8 sm:mt-10 bg-card border border-border rounded-xl p-4 sm:p-5">
         <h2 className="font-display font-semibold mb-3">How to get the zip</h2>
         <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
           {STEPS.map((step) => (

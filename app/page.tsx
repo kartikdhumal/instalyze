@@ -80,12 +80,17 @@ export default function HomePage() {
 
   if (!archive) {
     return (
-      <>
-        <div className="flex justify-end px-4 pt-4">
-          <ThemeToggle />
-        </div>
+      <div className="flex flex-col min-h-[100dvh]">
+        <nav className="shrink-0 border-b border-border bg-nav-bg/70 backdrop-blur-md">
+          <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+            <span className="font-display text-xl sm:text-2xl font-extrabold tracking-[-0.5px] bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] bg-clip-text text-transparent">
+              Instalyze
+            </span>
+            <ThemeToggle />
+          </div>
+        </nav>
         <UploadScreen loading={opening} progress={progress} onFile={openFile} />
-      </>
+      </div>
     );
   }
 
