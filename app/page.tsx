@@ -89,23 +89,41 @@ export default function HomePage() {
     );
   }
 
+  const newZipButton = (
+    <button
+      type="button"
+      onClick={reset}
+      className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-muted-foreground cursor-pointer hover:text-foreground hover:bg-muted"
+    >
+      <Upload className="w-4 h-4" />
+      <span>New zip</span>
+    </button>
+  );
+
   return (
     <div className="flex flex-col h-[100dvh]">
       <nav className="shrink-0 border-b border-border bg-nav-bg/70 backdrop-blur-md">
-        <div className="max-w-screen-2xl mx-auto px-4 py-3 flex flex-wrap items-center gap-3">
-          <span className="font-display text-2xl font-extrabold tracking-[-0.5px] bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] bg-clip-text text-transparent">
-            Instalyze
-          </span>
+        <div className="max-w-screen-2xl mx-auto px-3 sm:px-4 py-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          {/* Brand row — actions sit inline on mobile, move to the right on desktop */}
+          <div className="flex items-center justify-between gap-2">
+            <span className="font-display text-2xl font-extrabold tracking-[-0.5px] bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] bg-clip-text text-transparent">
+              Instalyze
+            </span>
+            <div className="flex items-center gap-1 sm:hidden">
+              {newZipButton}
+              <ThemeToggle />
+            </div>
+          </div>
 
           <ConversationPicker threads={archive.threads} value={thread} onChange={setThreadId} />
 
-          <div className="flex items-center gap-1 bg-muted rounded-xl p-1">
+          <div className="flex items-center gap-1 bg-muted rounded-xl p-1 w-full sm:w-auto">
             {TABS.map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
                 type="button"
                 onClick={() => setTab(key)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
+                className={`flex flex-1 sm:flex-initial items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer transition-colors ${
                   tab === key ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -115,15 +133,8 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="ml-auto flex items-center gap-1">
-            <button
-              type="button"
-              onClick={reset}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-muted-foreground cursor-pointer hover:text-foreground hover:bg-muted"
-            >
-              <Upload className="w-4 h-4" />
-              New zip
-            </button>
+          <div className="ml-auto hidden sm:flex items-center gap-1">
+            {newZipButton}
             <ThemeToggle />
           </div>
         </div>

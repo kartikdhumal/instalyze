@@ -23,6 +23,46 @@ function dayCount(days: number): string {
   return days === 1 ? "1 Day" : `${days} Days`;
 }
 
+/**
+ * Instagram-story styled stat card: a gradient avatar ring around the emoji,
+ * a soft brand-gradient glow, and compact typography that holds up at the
+ * 2-up mobile width.
+ */
+function FunCard({
+  emoji,
+  title,
+  value,
+  subtitle,
+}: {
+  readonly emoji: string;
+  readonly title: string;
+  readonly value: string;
+  readonly subtitle?: string | null;
+}) {
+  return (
+    <div
+      data-pdf-block
+      className="stat-card relative overflow-hidden bg-card border border-border rounded-2xl p-3.5 sm:p-4 flex flex-col items-center justify-center text-center"
+    >
+      <div className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 h-24 w-24 rounded-full bg-gradient-to-br from-[#f58529]/25 via-[#dd2a7b]/25 to-[#8134af]/25 blur-2xl" />
+      <div className="relative mb-2.5 h-12 w-12 rounded-full bg-gradient-to-br from-[#f58529] via-[#dd2a7b] to-[#8134af] p-[2px]">
+        <div className="grid h-full w-full place-items-center rounded-full bg-card text-2xl leading-none">
+          {emoji}
+        </div>
+      </div>
+      <h3 className="relative font-medium text-xs sm:text-sm text-fun-title mb-1.5">{title}</h3>
+      <div className="relative flex flex-col items-center justify-center gap-1">
+        <span className="text-base sm:text-xl font-extrabold text-fun-value leading-tight break-words">
+          {value}
+        </span>
+        {subtitle && (
+          <span className="text-[10px] sm:text-[11px] text-fun-desc leading-tight">{subtitle}</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function countLabel(value: unknown, suffix = ""): string {
   if (value === null || value === undefined) return "";
   return Number(value).toLocaleString() + suffix;
@@ -270,11 +310,11 @@ export function AnalyticsView({ data }: { readonly data: AnalyticsResult }) {
       + ((data.funAnalytics.longestInactivePeriod?.days ?? 0) > 0 ? 1 : 0)
     : 0;
   const funGridCols: Record<number, string> = {
-    2: "grid-cols-1 sm:grid-cols-2",
-    3: "grid-cols-1 sm:grid-cols-3",
-    4: "grid-cols-1 lg:grid-cols-4",
-    5: "grid-cols-1 md:grid-cols-3 lg:grid-cols-5",
-    6: "grid-cols-1 md:grid-cols-3 lg:grid-cols-6",
+    2: "grid-cols-2",
+    3: "grid-cols-2 sm:grid-cols-3",
+    4: "grid-cols-2 lg:grid-cols-4",
+    5: "grid-cols-2 md:grid-cols-3 lg:grid-cols-5",
+    6: "grid-cols-2 md:grid-cols-3 lg:grid-cols-6",
   };
 
   const top10DaysData = data?.top10MostActiveDays
@@ -375,95 +415,63 @@ export function AnalyticsView({ data }: { readonly data: AnalyticsResult }) {
 
         {data.funAnalytics && (
           <div className="mb-6">
-            <div className={`grid gap-4 ${funGridCols[funCardCount] ?? "grid-cols-2 md:grid-cols-3 lg:grid-cols-5"}`}>
-              <div data-pdf-block className="bg-card border border-border rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                <span className="text-3xl mb-2">✍🏻</span>
-                <h3 className="font-medium text-sm text-fun-title mb-2">The Essay Writer</h3>
-                <div className="flex flex-col items-center justify-center gap-1">
-                  <span className="text-xl font-extrabold text-fun-value leading-none">
-                    {data.funAnalytics.essayWriter.user}
-                  </span>
-                  {data.funAnalytics.essayWriter.value && (
-                    <span className="text-[11px] text-fun-desc leading-tight">
-                      Avg. {data.funAnalytics.essayWriter.value}
-                    </span>
-                  )}
-                </div>
-              </div>
+            <div className={`grid gap-3 sm:gap-4 ${funGridCols[funCardCount] ?? "grid-cols-2 md:grid-cols-3 lg:grid-cols-5"}`}>
+              <FunCard
+                emoji="✍🏻"
+                title="The Essay Writer"
+                value={data.funAnalytics.essayWriter.user}
+                subtitle={data.funAnalytics.essayWriter.value ? `Avg. ${data.funAnalytics.essayWriter.value}` : null}
+              />
 
               {isGroupChat && (
                 <>
-                  <div data-pdf-block className="bg-card border border-border rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                    <span className="text-3xl mb-2">👑</span>
-                    <h3 className="font-medium text-sm text-fun-title mb-2">Most Active Member</h3>
-                    <div className="flex items-baseline justify-center gap-2">
-                      <span className="text-xl font-extrabold text-fun-value">
-                        {data.userAggregates.messages[0]?.label || "-"}
-                      </span>
-                    </div>
-                  </div>
-                  <div data-pdf-block className="bg-card border border-border rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                    <span className="text-3xl mb-2">😴</span>
-                    <h3 className="font-medium text-sm text-fun-title mb-2">Least Active Member</h3>
-                    <div className="flex items-baseline justify-center gap-2">
-                      <span className="text-xl font-extrabold text-fun-value">
-                        {data.userAggregates.messages[data.userAggregates.messages.length - 1]?.label || "-"}
-                      </span>
-                    </div>
-                  </div>
+                  <FunCard
+                    emoji="👑"
+                    title="Most Active Member"
+                    value={data.userAggregates.messages[0]?.label || "-"}
+                  />
+                  <FunCard
+                    emoji="😴"
+                    title="Least Active Member"
+                    value={data.userAggregates.messages[data.userAggregates.messages.length - 1]?.label || "-"}
+                  />
                 </>
               )}
 
               {data.funAnalytics.silentSince && data.funAnalytics.silentSince.days > 0 && (
-                <div data-pdf-block className="bg-card border border-border rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                  <span className="text-3xl mb-2">💤</span>
-                  <h3 className="font-medium text-sm text-fun-title mb-2">Silent Since</h3>
-                  <div className="flex flex-col items-center justify-center gap-1">
-                    <span className="text-xl font-extrabold text-fun-value leading-none">
-                      {dayCount(data.funAnalytics.silentSince.days)}
-                    </span>
-                    <span className="text-[11px] text-fun-desc leading-tight">
-                      Since {data.funAnalytics.silentSince.date}
-                    </span>
-                  </div>
-                </div>
+                <FunCard
+                  emoji="💤"
+                  title="Silent Since"
+                  value={dayCount(data.funAnalytics.silentSince.days)}
+                  subtitle={`Since ${data.funAnalytics.silentSince.date}`}
+                />
               )}
 
-              <div data-pdf-block className="bg-card border border-border rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                <span className="text-3xl mb-2">🗓️</span>
-                <h3 className="font-medium text-sm text-fun-title mb-2">Longest Streak</h3>
-                <div className="flex flex-col items-center justify-center gap-1">
-                  <span className="text-xl font-extrabold text-fun-value leading-none">
-                    {dayCount(data.funAnalytics.longestStreak)}
-                  </span>
-                  {data.funAnalytics.longestStreakFrom && (
-                    <span className="text-[11px] text-fun-desc leading-tight">
-                      {data.funAnalytics.longestStreakFrom} - {data.funAnalytics.longestStreakTo}
-                    </span>
-                  )}
-                </div>
-              </div>
+              <FunCard
+                emoji="🗓️"
+                title="Longest Streak"
+                value={dayCount(data.funAnalytics.longestStreak)}
+                subtitle={
+                  data.funAnalytics.longestStreakFrom
+                    ? `${data.funAnalytics.longestStreakFrom} - ${data.funAnalytics.longestStreakTo}`
+                    : null
+                }
+              />
 
               {data.funAnalytics.longestInactivePeriod && data.funAnalytics.longestInactivePeriod.days > 0 && (
-                <div data-pdf-block className="bg-card border border-border rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                  <span className="text-3xl mb-2">⏳</span>
-                  <h3 className="font-medium text-sm text-fun-title mb-2">Longest Inactive Period</h3>
-                  <div className="flex flex-col items-center justify-center gap-1">
-                    <span className="text-xl font-extrabold text-fun-value leading-none">
-                      {dayCount(data.funAnalytics.longestInactivePeriod.days)}
-                    </span>
-                    <span className="text-[11px] text-fun-desc leading-tight">
-                      {data.funAnalytics.longestInactivePeriod.from} - {data.funAnalytics.longestInactivePeriod.to}
-                    </span>
-                  </div>
-                </div>
+                <FunCard
+                  emoji="⏳"
+                  title="Longest Inactive Period"
+                  value={dayCount(data.funAnalytics.longestInactivePeriod.days)}
+                  subtitle={`${data.funAnalytics.longestInactivePeriod.from} - ${data.funAnalytics.longestInactivePeriod.to}`}
+                />
               )}
             </div>
           </div>
         )}
 
         {monthlyTimelineData.length > 0 && (
-          <div data-pdf-block className="bg-card border border-border rounded-xl p-5 mb-6 break-inside-avoid">
+          <div data-pdf-block className="bg-card border border-border rounded-xl p-4 sm:p-5 mb-6 break-inside-avoid">
             <h2 className="font-display text-lg font-semibold mb-3 text-foreground tracking-[-0.3px]">
               Chat History Timeline
             </h2>
@@ -527,7 +535,7 @@ export function AnalyticsView({ data }: { readonly data: AnalyticsResult }) {
         )}
 
         {data.topEmojisPerUser && data.topEmojisPerUser.length > 0 && (
-          <div data-pdf-block className="bg-card border border-border rounded-xl p-5 mb-6 break-inside-avoid">
+          <div data-pdf-block className="bg-card border border-border rounded-xl p-4 sm:p-5 mb-6 break-inside-avoid">
                 <h2 className="font-display text-lg font-semibold mb-3 text-foreground tracking-[-0.3px]">
                   Top emojis by User
                 </h2>
@@ -596,7 +604,7 @@ export function AnalyticsView({ data }: { readonly data: AnalyticsResult }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {top10DaysData.length > 0 && (
-            <div data-pdf-block className="bg-card border border-border rounded-xl p-5 break-inside-avoid">
+            <div data-pdf-block className="bg-card border border-border rounded-xl p-4 sm:p-5 break-inside-avoid">
               <h2 className="font-display text-lg font-semibold mb-3 text-foreground tracking-[-0.3px]">
                 Most Active Days
               </h2>
@@ -647,7 +655,7 @@ export function AnalyticsView({ data }: { readonly data: AnalyticsResult }) {
             </div>
           )}
           {hourlyChartData.length > 0 && (
-            <div data-pdf-block className="bg-card border border-border rounded-xl p-5 break-inside-avoid">
+            <div data-pdf-block className="bg-card border border-border rounded-xl p-4 sm:p-5 break-inside-avoid">
               <h2 className="font-display text-lg font-semibold mb-3 text-foreground tracking-[-0.3px]">
                 Messages by hour
               </h2>
@@ -710,7 +718,7 @@ export function AnalyticsView({ data }: { readonly data: AnalyticsResult }) {
             </div>
           )}
           {data.dayOfWeekStats && data.dayOfWeekStats.length > 0 && (
-            <div data-pdf-block className="bg-card border border-border rounded-xl p-5  break-inside-avoid">
+            <div data-pdf-block className="bg-card border border-border rounded-xl p-4 sm:p-5  break-inside-avoid">
               <h2 className="font-display text-lg font-semibold mb-3 text-foreground tracking-[-0.3px]">
                 Messages per day of the week
               </h2>
@@ -769,7 +777,7 @@ export function AnalyticsView({ data }: { readonly data: AnalyticsResult }) {
 
 
           {top10WordsData.length > 0 && (
-            <div data-pdf-block className="bg-card border border-border rounded-xl p-5 break-inside-avoid">
+            <div data-pdf-block className="bg-card border border-border rounded-xl p-4 sm:p-5 break-inside-avoid">
               <h2 className="font-display text-lg font-semibold mb-3 text-foreground tracking-[-0.3px]">
                 Most used words (&gt; 3 letters)
               </h2>
@@ -867,7 +875,7 @@ export function AnalyticsView({ data }: { readonly data: AnalyticsResult }) {
           {renderBarList("Most linked websites", data.topWebsites, "#f5d0fe", "#fae8ff")}
 
           {data.topWebsitesPerUser && data.topWebsitesPerUser.length > 0 && (
-            <div data-pdf-block className="break-inside-avoid mb-6 bg-card border border-border rounded-xl p-5 col-span-full">
+            <div data-pdf-block className="break-inside-avoid mb-6 bg-card border border-border rounded-xl p-4 sm:p-5 col-span-full">
               <h2 className="font-display text-lg font-semibold mb-3 text-foreground tracking-[-0.3px]">
                 Top websites per user
               </h2>
