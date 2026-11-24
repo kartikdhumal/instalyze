@@ -2,7 +2,7 @@
 
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Virtuoso, type VirtuosoHandle } from "react-virtuoso";
-import { ChevronDown, ChevronUp, Search, X } from "lucide-react";
+import { ChevronDown, ChevronUp, Heart, Image as ImageIcon, Mic, Plus, Search, Smile, X } from "lucide-react";
 import { InitialsAvatar } from "@/components/InitialsAvatar";
 import { formatChatDate } from "@/lib/formatDate";
 import type { ChatMessage, ThreadSummary } from "@/lib/instagram/types";
@@ -22,6 +22,34 @@ function ChatFooter() {
 }
 
 const VIRTUOSO_COMPONENTS = { Footer: ChatFooter };
+
+function ComposerPreview() {
+  return (
+    <div className="shrink-0 border-t border-border bg-background/95 px-3 py-3 sm:px-6">
+      <div className="mx-auto flex w-full max-w-4xl items-center gap-3">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#f58529] via-[#dd2a7b] to-[#8134af] text-white">
+          <Plus className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <div className="flex min-w-0 flex-1 items-center gap-3 rounded-full border border-border px-4 py-2.5">
+          <input
+            type="text"
+            readOnly
+            tabIndex={-1}
+            placeholder="Message..."
+            aria-label="Message composer preview; messaging is unavailable"
+            className="min-w-0 flex-1 cursor-default bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+          />
+          <div className="flex shrink-0 items-center gap-3 text-foreground" aria-hidden="true">
+            <Mic className="h-5 w-5" />
+            <ImageIcon className="h-5 w-5" />
+            <Smile className="h-5 w-5" />
+            <Heart className="h-5 w-5 text-[#ed4956]" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function buildRows(messages: ChatMessage[], owner: string): ChatRow[] {
   return messages.map((message, index) => {
@@ -174,6 +202,7 @@ export function ChatView({ thread, messages, owner, resolveMedia }: ChatViewProp
           style={{ height: "100%" }}
         />
       </div>
+      <ComposerPreview />
     </div>
   );
 }
