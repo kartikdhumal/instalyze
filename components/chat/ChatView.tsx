@@ -108,7 +108,7 @@ export function ChatView({ thread, messages, owner, resolveMedia }: ChatViewProp
 
       {searchOpen && (
         <div className="flex items-center gap-2 px-4 py-2 border-b border-border shrink-0">
-          <div className="flex items-center gap-2 flex-1 rounded-lg bg-muted px-3 h-9">
+          <div className="flex items-center gap-2 flex-1 min-w-0 rounded-lg bg-muted px-3 h-9">
             <Search className="w-4 h-4 text-muted-foreground shrink-0" />
             <input
               autoFocus
@@ -127,27 +127,29 @@ export function ChatView({ thread, messages, owner, resolveMedia }: ChatViewProp
             type="button"
             onClick={() => step(-1)}
             disabled={matches.length === 0}
-            className="p-1.5 rounded-full cursor-pointer hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
-            aria-label="Older match"
+            className="shrink-0 p-1.5 rounded-full cursor-pointer text-muted-foreground hover:text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
+            aria-label="Previous matching message"
+            title="Previous matching message"
           >
-            <ChevronUp className="w-5 h-5" />
+            <ChevronUp className="w-5 h-5 shrink-0" />
           </button>
           <button
             type="button"
             onClick={() => step(1)}
             disabled={matches.length === 0}
-            className="p-1.5 rounded-full cursor-pointer hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
-            aria-label="Newer match"
+            className="shrink-0 p-1.5 rounded-full cursor-pointer text-muted-foreground hover:text-foreground hover:bg-muted disabled:cursor-not-allowed disabled:opacity-40"
+            aria-label="Next matching message"
+            title="Next matching message"
           >
-            <ChevronDown className="w-5 h-5" />
+            <ChevronDown className="w-5 h-5 shrink-0" />
           </button>
           <button
             type="button"
             onClick={closeSearch}
-            className="p-1.5 rounded-full cursor-pointer hover:bg-muted"
+            className="shrink-0 p-1.5 rounded-full cursor-pointer hover:bg-muted"
             aria-label="Close search"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 shrink-0" />
           </button>
         </div>
       )}

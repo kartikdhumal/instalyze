@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { readonly children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`min-h-[100dvh] bg-background antialiased flex flex-col ${inter.className} ${inter.variable} ${plusJakartaSans.variable}`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           <div className="flex-1 flex flex-col">{children}</div>
           <Toaster />
         </ThemeProvider>
