@@ -28,6 +28,10 @@ export interface RawThread {
 
 const decoder = new TextDecoder("utf-8", { fatal: true });
 
+function addEmojiPresentationToHearts(value: string): string {
+  return value.replace(/([❤♥])(?:\uFE0E)?(?!\uFE0F)/gu, "$1\uFE0F");
+}
+
 export function repairMojibake(value: string | undefined): string {
   if (!value) return "";
   if (!/[\u0080-ÿ]/.test(value)) return value;
@@ -86,7 +90,7 @@ function shareOf(raw: RawMessage): SharedItem | null {
   if (!raw.share) return null;
   const share = {
     link: raw.share.link ?? "",
-    text: repairMojibake(raw.share.share_text),
+    text: addEmojiPresentationToHearts(repairMojibake(raw.share.share_text)),
     owner: repairMojibake(raw.share.original_content_owner),
   };
   return share.link || share.text ? share : null;
@@ -94,7 +98,7 @@ function shareOf(raw: RawMessage): SharedItem | null {
 
 function reactionsOf(raw: RawMessage): Reaction[] {
   return (raw.reactions ?? []).map((reaction) => ({
-    emoji: repairMojibake(reaction.reaction),
+    emoji: addEmojiPresentationToHearts(repairMojibake(reaction.reaction)),
     actor: repairMojibake(reaction.actor),
   }));
 }
@@ -116,7 +120,7 @@ export function normalizeMessages(raws: RawMessage[]): ChatMessage[] {
 
   const messages: ChatMessage[] = [];
   for (const raw of sorted) {
-    const rawContent = repairMojibake(raw.content).trim();
+    const rawContent = addEmojiPresentationToHearts(repairMojibake(raw.content)).trim();
     const edited = EDITED_SUFFIX.test(rawContent);
     const content = rawContent.replace(EDITED_SUFFIX, "");
     if (REACTION_NOTICE.test(content) || UNSENT_NOTICE.test(content)) continue;

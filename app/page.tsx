@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { BarChart3, Loader2, Menu, MessageCircle, ShieldCheck, Sparkles, Upload, X } from "lucide-react";
+import { BarChart3, Loader2, Menu, MessageCircle, Sparkles, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import { AnalyticsView } from "@/components/AnalyticsView";
 import { ChatView } from "@/components/chat/ChatView";
@@ -154,24 +154,14 @@ export default function HomePage() {
   if (!archive) {
     return (
       <div className="flex min-h-[100dvh] flex-col overflow-x-hidden">
-        <nav className="sticky top-0 z-20 shrink-0 border-b border-border/70 bg-background/75 backdrop-blur-xl">
-          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-5 py-3.5 sm:px-8 lg:px-10">
-            <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-to-br from-[#f58529] via-[#dd2a7b] to-[#8134af] text-white shadow-lg shadow-[#dd2a7b]/20">
-                <Sparkles className="h-5 w-5" />
+        <nav className="sticky top-0 z-20 shrink-0 border-b border-border/70 bg-background/80 backdrop-blur-xl">
+          <div className="relative mx-auto flex h-16 w-full max-w-7xl items-center justify-center px-4">
+            <span className="font-display text-xl font-extrabold tracking-[-0.7px] sm:text-2xl">
+              <span className="bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] bg-clip-text text-transparent">
+                instalyze
               </span>
-              <div>
-                <span className="block font-display text-xl font-extrabold leading-tight tracking-[-0.7px]">instalyze</span>
-                <span className="hidden text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground sm:block">
-                  Instagram archive insights
-                </span>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="hidden items-center gap-1.5 rounded-full border border-border/80 bg-card/70 px-3 py-1.5 text-xs font-medium text-muted-foreground sm:inline-flex">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-500" />
-                Private by design
-              </span>
+            </span>
+            <div className="absolute right-4">
               <ThemeToggle />
             </div>
           </div>
@@ -325,7 +315,7 @@ export default function HomePage() {
             </div>
           )}
           {tab === "chat" && (
-            <div className="flex-1 min-h-0 w-full max-w-3xl mx-auto p-4">
+            <div className="flex-1 min-h-0 w-full">
               <ChatView
                 key={thread.id}
                 thread={thread}

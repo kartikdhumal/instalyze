@@ -108,7 +108,7 @@ export function MessageRow({ row, isGroup, query, active, resolveMedia }: Messag
             {lastInGroup && <InitialsAvatar name={message.sender} className="w-7 h-7 text-[10px]" />}
           </div>
         )}
-        <div className={`flex flex-col max-w-[70%] ${own ? "items-end" : "items-start"}`}>
+        <div className={`flex max-w-[min(78%,42rem)] flex-col ${own ? "items-end" : "items-start"}`}>
           {isGroup && !own && firstInGroup && (
             <span className="text-[11px] text-muted-foreground px-3 pb-1">{message.sender}</span>
           )}

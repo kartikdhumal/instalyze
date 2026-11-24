@@ -87,7 +87,7 @@ export function ChatView({ thread, messages, owner, resolveMedia }: ChatViewProp
   if (deferredQuery) matchLabel = matches.length === 0 ? "No results" : `${matchIndex + 1} of ${matches.length}`;
 
   return (
-    <div className="flex flex-col h-full min-h-0 bg-background border border-border rounded-xl overflow-hidden">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-background">
       <div className="flex items-center gap-3 px-4 h-16 border-b border-border shrink-0">
         <InitialsAvatar name={thread.title} isGroup={thread.isGroup} className="w-10 h-10 text-sm" />
         <div className="min-w-0 flex-1">
